@@ -28,3 +28,8 @@ services:
 
 volumes:
   send-redis:
+
+networks:
+  default:
+    external: true
+    name: nghminh163-network
