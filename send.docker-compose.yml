@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+  send:
+    image: "${DOCKER_SEND_IMAGE}"
+    restart: always
+    ports:
+      - "1234:1234"
+    environment:
+      - VIRTUAL_HOST=${SEND_HOST}
+      - VIRTUAL_PORT=1234
+      - DHPARAM_GENERATION=false
+      - NODE_ENV=production
+      - BASE_URL=${SEND_BASE_URL}
+      - PORT=1234
+      - REDIS_HOST=redis
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - S3_BUCKET=${S3_BUCKET}
+      - S3_ENDPOINT=${S3_ENDPOINT}
+      - S3_USE_PATH_STYLE_ENDPOINT=true
+
+  redis:
+    image: "redis:alpine"
+    restart: always
+    volumes:
+      - send-redis:/data
+
+volumes:
+  send-redis:
+
+networks:
+  default:
+    external: true
+    name: nghminh163-network
